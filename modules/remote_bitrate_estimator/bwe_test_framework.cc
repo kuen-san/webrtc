@@ -8,18 +8,23 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef WEBRTC_MODULES_DESKTOP_CAPTURE_WIN_CURSOR_H_
-#define WEBRTC_MODULES_DESKTOP_CAPTURE_WIN_CURSOR_H_
-
-#include <windows.h>
+#include "webrtc/modules/remote_bitrate_estimator/bwe_test_framework.h"
 
 namespace webrtc {
+namespace testing {
+namespace bwe {
 
-class MouseCursor;
+bool IsTimeSorted(const Packets& packets) {
+  PacketsConstIt last_it = packets.begin();
+  for (PacketsConstIt it = last_it; it != packets.end(); ++it) {
+    if (it != last_it && *it < *last_it) {
+      return false;
+    }
+    last_it = it;
+  }
+  return true;
+}
 
-// Converts an HCURSOR into a |MouseCursor| instance.
-MouseCursor* CreateMouseCursorFromHCursor(HDC dc, HCURSOR cursor);
-
+}  // namespace bwe
+}  // namespace testing
 }  // namespace webrtc
-
-#endif  // WEBRTC_MODULES_DESKTOP_CAPTURE_WIN_CURSOR_H_
